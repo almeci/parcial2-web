@@ -1,4 +1,4 @@
-import { IsString, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsString, IsDateString, IsNotEmpty, Matches } from 'class-validator';
 
 export class CreateTravelPlanDto {
   @IsString()
@@ -13,7 +13,7 @@ export class CreateTravelPlanDto {
   @IsNotEmpty()
   endDate!: string;
 
-  @IsString()
   @IsNotEmpty()
+  @Matches(/^[A-Z]{3}$/)
   destinationAlphaCode!: string;
 }
