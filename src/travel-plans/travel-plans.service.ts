@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { TravelPlan, TravelPlanDocument } from './schemas/travel-plan.schema';
 import { CountriesService } from '../countries/countries.service';
 import { CreateTravelPlanDto } from './dto/create-travel-plan.dto';
+import { CreateExpenseDto } from './dto/create-expense.dto';
 
 @Injectable()
 export class TravelPlansService {
@@ -32,5 +33,13 @@ export class TravelPlansService {
   async remove(id: string): Promise<void> {
     const result = await this.travelPlanModel.findByIdAndDelete(id).exec();
     if (!result) throw new NotFoundException(`Couldn't find travel plan ${id}`);
+  }
+
+  async addExpense(id: string, dto: CreateExpenseDto): Promise<TravelPlan> {
+    const plan = await this.travelPlanModel
+      .findByIdAndUpdate(id, { $push: { expenses: dto } }, { new: true })
+      .exec();
+    if (!plan) throw new NotFoundException(`Couldn't find travel plan ${id}`);
+    return plan;
   }
 }

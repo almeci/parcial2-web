@@ -3,6 +3,12 @@ import { Document } from 'mongoose';
 
 export type TravelPlanDocument = TravelPlan & Document;
 
+export class Expense {
+  description: string;
+  amount: number;
+  category: string;
+}
+
 @Schema()
 export class TravelPlan {
   @Prop({ required: true, unique: false })
@@ -16,6 +22,12 @@ export class TravelPlan {
 
   @Prop({ required: true, unique: false })
   destinationAlphaCode: string;
+
+  @Prop({
+    type: [{ description: String, amount: Number, category: String }],
+    default: [],
+  })
+  expenses: Expense[];
 }
 
 export const TravelPlanSchema = SchemaFactory.createForClass(TravelPlan);

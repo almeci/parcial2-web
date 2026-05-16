@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { TravelPlansService } from './travel-plans.service';
 import { CreateTravelPlanDto } from './dto/create-travel-plan.dto';
+import { CreateExpenseDto } from './dto/create-expense.dto';
 
 @Controller('travel-plans')
 export class TravelPlansController {
@@ -24,5 +25,10 @@ export class TravelPlansController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.travelPlansService.remove(id);
+  }
+
+  @Post(':id/expenses')
+  addExpense(@Param('id') id: string, @Body() dto: CreateExpenseDto) {
+    return this.travelPlansService.addExpense(id, dto);
   }
 }
