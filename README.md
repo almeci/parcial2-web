@@ -34,6 +34,8 @@ npm start
 
 La API estará disponible en http://localhost:3000.
 
+No es necesario crear colecciones ni inicializar la base de datos manualmente ya que se está usando una instancia de MongoDB en la nube.
+
 ## 2. Arquitectura interna
 
 ### 2.1. CountriesModule (lógica interna)
@@ -67,7 +69,8 @@ POST http://localhost:3000/travel-plans
   "title": "Viaje por Colombia",
   "startDate": "2026-05-14",
   "endDate": "2026-05-30",
-  "destinationAlphaCode": "COL"
+  "destinationAlphaCode": "COL",
+  "userId": "6a062ecb2bd48f49d1e5c7f0"
 }
 ```
 
@@ -90,3 +93,44 @@ GET http://localhost:3000/travel-plans/6a062ecb2bd48f49d1e5c7f8
 DELETE http://localhost:3000/travel-plans/6a0631042bd48f49d1e5c7fc
 
 ![Eliminar plan](<images/Eliminar plan.png>)
+
+### 3.5. Agregar un gasto a un plan
+
+POST http://localhost:3000/travel-plans/6a0630c12bd48f49d1e5c7fa/expenses
+
+#### Body:
+
+```
+{
+  "description": "Transporte hasta el hotel",
+  "amount": 40000,
+  "category": "Transporte"
+}
+```
+
+![Agregar gasto](<images/Agregar gasto.png>)
+
+### 3.6. Crear un usuario
+
+POST http://localhost:3000/users
+
+#### Body:
+
+```
+{
+  "name": "Camille Briones",
+  "email": "camille.briones@email.com"
+}
+```
+
+![Crear usuario](<images/Crear usuario.png>)
+
+### 3.7. Obtener un usuario por ID
+
+GET http://localhost:3000/users/6a07d20c4afa5caaf4b73a3a
+
+![Obtener usuario](<images/Obtener usuario.png>)
+
+## 4. Reporte de cambios parcial 2
+
+Para agregar un gasto a un plan existente se usa la operación $push de MongoDB que permite insertar un nuevo elemento al final del arreglo expenses sin tener que reemplazar todo el documento. La instruccion findByIdAndUpdate busca el plan por su ID y aplica $push sobre el arreglo embebido en una sola operación, y así los gastos anteriores no se tocan y el nuevo queda almacenado directamente dentro del documento del plan de viaje.

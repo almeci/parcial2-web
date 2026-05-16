@@ -16,4 +16,8 @@ export class CreateTravelPlanDto {
   @IsNotEmpty()
   @Matches(/^[A-Z]{3}$/)
   destinationAlphaCode!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userId!: string;
 }

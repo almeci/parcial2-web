@@ -4,6 +4,7 @@ import { TravelPlansController } from './travel-plans.controller';
 import { TravelPlan, TravelPlanSchema } from './schemas/travel-plan.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CountriesModule } from '../countries/countries.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { CountriesModule } from '../countries/countries.module';
       { name: TravelPlan.name, schema: TravelPlanSchema },
     ]),
     CountriesModule,
+    UsersModule,
   ],
   providers: [TravelPlansService],
   controllers: [TravelPlansController],

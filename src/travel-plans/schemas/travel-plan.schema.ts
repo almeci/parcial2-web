@@ -23,6 +23,9 @@ export class TravelPlan {
   @Prop({ required: true, unique: false })
   destinationAlphaCode: string;
 
+  @Prop({ required: true })
+  userId: string;
+
   @Prop({
     type: [{ description: String, amount: Number, category: String }],
     default: [],

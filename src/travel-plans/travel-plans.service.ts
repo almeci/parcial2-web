@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TravelPlan, TravelPlanDocument } from './schemas/travel-plan.schema';
 import { CountriesService } from '../countries/countries.service';
+import { UsersService } from '../users/users.service';
 import { CreateTravelPlanDto } from './dto/create-travel-plan.dto';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 
@@ -12,9 +13,11 @@ export class TravelPlansService {
     @InjectModel(TravelPlan.name)
     private travelPlanModel: Model<TravelPlanDocument>,
     private countriesService: CountriesService,
+    private usersService: UsersService,
   ) {}
 
   async create(dto: CreateTravelPlanDto): Promise<TravelPlan> {
+    await this.usersService.findOne(dto.userId);
     await this.countriesService.resolveCountry(dto.destinationAlphaCode);
     const newPlan = new this.travelPlanModel(dto);
     return newPlan.save();
